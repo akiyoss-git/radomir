@@ -1,11 +1,12 @@
 const VkBot = require('node-vk-bot-api');
+const Session = require('node-vk-bot-api/lib/session');
+const Stage = require('node-vk-bot-api/lib/stage');
 const api = require('node-vk-bot-api/lib/api')
+const Markup = require('node-vk-bot-api/lib/markup');
+const XMLHttpRequest = require('xhr2');
+const wtfscene = require('./wtfscene')
 
-const bot = new VkBot("5611f9fe5cca5b61630406f7054ca28cb6cbcb7db657847a367f9f9dc0e8b6d9c0fe110041314c2ddb0d0");
-
-const isMember = async (id) => {
-  return await api('groups.isMember', {group_id: 7632561, user_id: id, access_token: "5611f9fe5cca5b61630406f7054ca28cb6cbcb7db657847a367f9f9dc0e8b6d9c0fe110041314c2ddb0d0"})
-}
+const bot = new VkBot("vk1.a.zghiAfyboZX0DSu3hX7eSWH36m2paeiEe4PrljpjI-WmlSA43TpaXR3V-yVBIZOp_NIDr6UIQsMZERppIFps5eDmuu3SJ_4Yu11V-GFj1DvlZjABwYGZysmJS9NTp_PfYsS3aQa2d0Z4H6_Y_FjuHqIV3iFycuhVvoR0VFLYY5Ywa-88rKHdYMj8i5QPZrSssksfRGOH8Q9JKH7ae4on0w");
 
 bot.use(async (ctx, next) => {
     try {
@@ -15,141 +16,61 @@ bot.use(async (ctx, next) => {
     }
   });
 
-bot.command(['бесконечность'], async (ctx)=>{
-    let res = await isMember(ctx.message.from_id)
-    if (res.response == 1){
-      await ctx.reply('', "video-187687824_456239021")
+bot.command(['Что случилось?'], async (ctx) => {
+  await ctx.reply('Да шарился по этим вашим интернетам и вирусняк поймал, не знаю что делать. Говорит загадки разгадывай, а я ж не шарю в зумерских темах... Поможешь?', null, Markup
+  .keyboard([
+    [
+      Markup.button('Конечно!'),
+    ]
+  ])
+  .oneTime(true))
+})
+
+const session = new Session();
+
+const stage = new Stage(wtfscene);
+
+bot.use(session.middleware());
+bot.use(stage.middleware());
+
+bot.command('Конечно!', async (ctx) => {
+  await ctx.scene.enter('wtf');
+});
+
+bot.command(['Эмм... Не за что?'], async (ctx) => {
+  await ctx.reply('Пользователь R@D0MEER был в сети 5 минут назад.')
+})
+
+bot.command(['Конечно!'], async (ctx) => {
+  requests = new XMLHttpRequest();
+  requests.open("POST", "https://pelevin.gpt.dobro.ai/generate/", true);
+  requests.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  requests.setRequestHeader("Access-Control-Allow-Origin","*");
+  requests.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
+  requests.onreadystatechange = function() { 
+    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+        console.log(JSON.parse(requests.response).replies[0])
+        congratText = congratText + JSON.parse(requests.response).replies[0]
+        ctx.reply()
     }
-    else {
-      await ctx.reply('Для продолжения работы требуется подписаться на группу Профбюро ИРИТ')
-    }
-    
-})
-
-bot.command(['заглавие'], async (ctx)=>{
-  let res = await isMember(ctx.message.from_id)
-  if (res.response == 1){
-    await ctx.reply('U+0412 &#1055 U+0418 &#95 U+0432 &#95 U+041D &#1053 U+005F &#49 U+0039 &#49 U+0036')
   }
-  else {
-    await ctx.reply('Для продолжения работы требуется подписаться на группу Профбюро ИРИТ')
-  }
-  
-})
-
-bot.command(['продуктивность'], async (ctx)=>{
-  let res = await isMember(ctx.message.from_id)
-  if (res.response == 1){
-    await ctx.reply('Как связаны студенты НГТУ, госпиталь и благородные девицы?')
-  }
-  else {
-    await ctx.reply('Для продолжения работы требуется подписаться на группу Профбюро ИРИТ')
-  }
-  
-})
-
-bot.command(['почему'], async (ctx)=>{
-  let res = await isMember(ctx.message.from_id)
-  if (res.response == 1){
-    await ctx.reply(`
-      (1) В каком году в НГТУ введена должность ректора?
-      (2) Найти методичку по начертательной геометрии первокурсника ИРИТ, или число с ней связанное
-      (3)  В каком году Радиофак стал ФРТК? (последние 2 числа)
-      (4)Как можно хорошо отдохнуть на сумму получившихся чисел?
-      https://www.nntu.ru/structure/view/podrazdeleniya/nauchno-tehnicheskaya-biblioteka/resursy
-    `)
-  }
-  else {
-    await ctx.reply('Для продолжения работы требуется подписаться на группу Профбюро ИРИТ')
-  }
-  
-})
-
-bot.command(['марафон'], async (ctx)=>{
-  let res = await isMember(ctx.message.from_id)
-  if (res.response == 1){
-    await ctx.reply(`
-  - Глава Университета в 1917 году
-  - Саша Белый
-  - Иванович из дальнобойщиков
-  Что общего у этих трёх людей и ПРОИСХОДЯЩИМ НА КАМЕРЕ?
-  https://www.earthcam.com/usa/massachusetts/westtisbury/?cam=flyingskunk
-  `)
-  }
-  else {
-    await ctx.reply('Для продолжения работы требуется подписаться на группу Профбюро ИРИТ')
-  }
-
-})
-
-bot.command(['Жизнь'], async (ctx)=>{
-  let res = await isMember(ctx.message.from_id)
-  if (res.response == 1){
-    await ctx.reply('Дана последовательность ЛЛЛ, ККЛ, К, КЛ, ЛЛЛЛ. Что идёт дальше?')
-  }
-  else {
-    await ctx.reply('Для продолжения работы требуется подписаться на группу Профбюро ИРИТ')
-  }
-  
-})
-
-bot.command(['сделка'], async (ctx)=>{
-  let res = await isMember(ctx.message.from_id)
-  if (res.response == 1){
-    await ctx.reply('', "doc121545456_632461944")
-  }
-  else {
-    await ctx.reply('Для продолжения работы требуется подписаться на группу Профбюро ИРИТ')
-  }
-
-})
-
-bot.command(['размышление'], async (ctx)=>{
-  let res = await isMember(ctx.message.from_id)
-  if (res.response == 1){
-    await ctx.reply('Стоит проверить группу...')
-  }
-  else {
-    await ctx.reply('Для продолжения работы требуется подписаться на группу Профбюро ИРИТ')
-  }
-
-})
-
-bot.command(['пустота'], async (ctx)=>{
-  let res = await isMember(ctx.message.from_id)
-  if (res.response == 1){
-    await ctx.reply('https://www.whenwasiconceived.com/\nm i l ь f', 'audio121545456_456239149')
-  }
-  else {
-    await ctx.reply('Для продолжения работы требуется подписаться на группу Профбюро ИРИТ')
-  }
-
-})
-
-bot.command(['итог'], async (ctx)=>{
-  let res = await isMember(ctx.message.from_id)
-  if (res.response == 1){
-    await ctx.reply('', 'video-187687824_456239020')
-  }
-  else {
-    await ctx.reply('Для продолжения работы требуется подписаться на группу Профбюро ИРИТ')
-  }
-
-})
-
-bot.command(['василий'], async (ctx)=>{
-  let res = await isMember(ctx.message.from_id)
-  if (res.response == 1){
-    await ctx.reply('', "photo-187687824_457239024")
-  }
-  else {
-    await ctx.reply('Для продолжения работы требуется подписаться на группу Профбюро ИРИТ')
-  }
+  requests.send(JSON.stringify({
+    "length": 30,
+    "prompt": congratText
+  })); 
 })
 
 bot.on(async (ctx)=>{
-  await ctx.reply('Добро пожаловать на HKEY, участник. Введите ключевое слово: ', null, null)
+  await ctx.reply('ЗдравстERROR ERROR ERRORнник! Приветствует тебя ERROR Радомир. Вновь несчастье случилось у меня EXCEPTION ERROR. После нашей встречи остался я в мире цифровом, да выбраться не моERROR. Помоги мне, пожалуйста?', null, Markup
+  .keyboard([
+    [
+      Markup.button('Что случилось?'),
+    ],
+  ])
+  .oneTime(true));
 })
+
+
 
 bot.startPolling((err) => {
     if (err) {

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "node-vk-bot-api": "^3.5.0"
+    "node-vk-bot-api": "^3.5.0",
+    "xhr2": "^0.2.1"
   },
   "devDependencies": {},
   "scripts": {
